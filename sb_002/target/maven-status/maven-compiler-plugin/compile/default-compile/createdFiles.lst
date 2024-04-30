@@ -1,0 +1,16 @@
+dz\ibnrochd\master14\model\Consultation.class
+dz\ibnrochd\master14\model\Traitement.class
+dz\ibnrochd\master14\model\Patient.class
+dz\ibnrochd\master14\business\PatientService.class
+dz\ibnrochd\master14\api\REST.class
+dz\ibnrochd\master14\Sb002Application.class
+dz\ibnrochd\master14\business\IPatientService.class
+dz\ibnrochd\master14\mappers\TraitementMapper.class
+dz\ibnrochd\master14\model\LigneConsultation.class
+dz\ibnrochd\master14\mappers\ConsultationMapper.class
+dz\ibnrochd\master14\business\TraitementService.class
+dz\ibnrochd\master14\business\ConsultationService.class
+dz\ibnrochd\master14\business\IConsultationService.class
+dz\ibnrochd\master14\mappers\PatientMapper.class
+dz\ibnrochd\master14\business\ITraitementService.class
+dz\ibnrochd\master14\model\RendezVous.class

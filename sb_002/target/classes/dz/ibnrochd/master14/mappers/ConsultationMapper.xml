@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dz.ibnrochd.master14.mappers.ConsultationMapper">
+
+<resultMap id="consultationMap" type="dz.ibnrochd.master14.model.Consultation" >
+        <id column="id" property="id" />
+        <result column="motif" property="motif" />
+        <result column="date_consultation" property="dateConsultation" />
+        <result column="id_patient" property="idPatient" />
+          <collection property="ligneConsultations" ofType="dz.ibnrochd.master14.model.LigneConsultation"
+            column="id" select="selectLignesDuConsultation" /> 
+     
+    </resultMap>
+    
+    <resultMap id="ligneconsultationMap" type="dz.ibnrochd.master14.model.LigneConsultation" >
+        <id column="id" property="id" />
+        <result column="id_consultation" property="idConsultation" />
+        <result column="id_traitement" property="idTraitement" />
+        <result column="posologie" property="posologie" />
+        <result column="unite_temps" property="uniteTemps" />
+        <result column="quantite" property="quantite" />
+               
+    </resultMap>
+    
+           
+      <select id="trouverParId" resultMap="consultationMap">
+        select * from cabinet.consultation where id =#{id}
+    </select>
+    <select id="trouverTous" resultMap="consultationMap">
+        select * from cabinet.consultation 
+    </select>
+    
+    <insert id="creerConsultation" parameterType="dz.ibnrochd.master14.model.Consultation">
+    INSERT INTO cabinet.consultation (id ,motif, date_consultation, id_patient)
+    VALUES (#{id},#{motif}, #{dateConsultation}, #{idPatient})
+   </insert>
+   <delete id="supprimerConsultation" parameterType="int">
+    DELETE FROM cabinet.consultation
+    WHERE id = #{id}
+</delete>
+<update id="modifierConsultation" parameterType="dz.ibnrochd.master14.model.Consultation">
+    UPDATE cabinet.consultation
+    SET motif = #{motif},
+        date_consultation = #{dateConsultation},
+        id_patient = #{idPatient}
+    WHERE id = #{id}
+</update>
+    
+    
+    
+    
+    
+    
+    
+    
+    <select id="selectLignesDuConsultation" resultMap="ligneconsultationMap"
+            resultType="dz.ibnrochd.master14.model.LigneConsultation">
+        SELECT * FROM cabinet.ligne_consultation WHERE id_consultation =#{id}
+    </select>
+    
+</mapper>

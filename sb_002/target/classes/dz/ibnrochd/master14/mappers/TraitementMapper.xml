@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dz.ibnrochd.master14.mappers.TraitementMapper">
+<resultMap id="traitementMap" type="dz.ibnrochd.master14.model.Traitement" >
+        <id column="id" property="id" />
+        <result column="nom" property="nom" />
+         <collection property="ligneConsultations" ofType="dz.ibnrochd.master14.model.LigneConsultation"
+            column="id" select="selectLignesDuConsultation" />          
+                       
+    </resultMap>
+    <select id="trouverParId" resultMap="traitementMap">
+        select * from cabinet.traitement where id =#{id}
+    </select>
+    
+     <resultMap id="ligneconsultationMap" type="dz.ibnrochd.master14.model.LigneConsultation" >
+        <id column="id" property="id" />
+        <result column="id_consultation" property="idConsultation" />
+        <result column="id_traitement" property="idTraitement" />
+        <result column="posologie" property="posologie" />
+        <result column="unite_temps" property="uniteTemps" />
+        <result column="quantite" property="quantite" />
+               
+    </resultMap>
+    
+   <select id="selectLignesDuConsultation" resultMap="ligneconsultationMap"
+            resultType="dz.ibnrochd.master14.model.LigneConsultation">
+        SELECT * FROM cabinet.ligne_consultation WHERE id_consultation =#{id}
+    </select>
+    
+    <select id="trouverTous" resultMap="traitementMap">
+        select * from cabinet.traitement 
+    </select>
+    
+    <insert id="creerTraitement" parameterType="dz.ibnrochd.master14.model.Patient">
+        INSERT INTO cabinet.traitement (id, nom)
+        VALUES (
+                   #{id},
+                   #{nom}                  
+               )
+    </insert>
+    <update id="modifierTraitement" parameterType="dz.ibnrochd.master14.model.Patient">
+        UPDATE cabinet.traitement
+        SET id = #{id}, nom = #{nom}
+        WHERE id = #{id}
+    </update>
+    <delete id="supprimerTraitement" parameterType="java.lang.Integer">
+        DELETE FROM cabinet.traitement WHERE id = #{id}
+    </delete>
+    
+    
+</mapper>

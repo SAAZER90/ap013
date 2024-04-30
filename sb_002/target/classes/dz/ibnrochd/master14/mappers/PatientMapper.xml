@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dz.ibnrochd.master14.mappers.PatientMapper">
+ <resultMap id="patientMap" type="dz.ibnrochd.master14.model.Patient" >
+        <id column="id" property="id" />
+        <result column="nom" property="nom" />
+        <result column="prenom" property="prenom" />
+        <result column="sexe" property="sexe" />
+        <result column="date_naissance" property="dateNaissance" />
+        <result column="numero_telephone" property="numeroTelephone" />
+        <result column="adresse" property="adresse" />
+        <collection property="consultations" ofType="dz.ibnrochd.master14.model.Consultation"
+            column="id" select="selectConsultationsDuPatient" />
+         <collection property="rendezVous" ofType="dz.ibnrochd.master14.model.RendezVous"
+            column="id" select="selectRendezVousDuPatient" />   
+        
+    </resultMap>
+    <resultMap id="consultationMap" type="dz.ibnrochd.master14.model.Consultation" >
+        <id column="id" property="id" />
+        <result column="motif" property="motif" />
+        <result column="date_consultation" property="dateConsultation" />
+        <result column="id_patient" property="idPatient" />
+          <collection property="ligneConsultations" ofType="dz.ibnrochd.master14.model.LigneConsultation"
+            column="id" select="selectLignesDuConsultation" /> 
+     
+    </resultMap>
+    
+    <resultMap id="ligneconsultationMap" type="dz.ibnrochd.master14.model.LigneConsultation" >
+        <id column="id" property="id" />
+        <result column="id_consultation" property="idConsultation" />
+        <result column="id_traitement" property="idTraitement" />
+        <result column="posologie" property="posologie" />
+        <result column="unite_temps" property="uniteTemps" />
+        <result column="quantite" property="quantite" />
+               
+    </resultMap>
+    
+     <resultMap id="rendezVousMap" type="dz.ibnrochd.master14.model.RendezVous" >
+        <id column="id" property="id" />
+        <result column="date_rdv" property="dateRdv" />   
+               
+    </resultMap>
+    
+    
+    
+    <select id="trouverTous" resultMap="patientMap">
+        select * from cabinet.patient
+    </select>
+     <select id="selectConsultationsDuPatient" parameterType="java.lang.Integer" resultMap="consultationMap"      resultType="dz.ibnrochd.master14.model.Consultation">
+        SELECT * FROM cabinet.consultation WHERE id_patient =  #{nama}
+    </select>
+    <select id="selectRendezVousDuPatient" parameterType="java.lang.Integer" resultMap="rendezVousMap"
+            resultType="dz.ibnrochd.master14.model.RendezVous">
+        SELECT * FROM cabinet.rendez_vous WHERE id_patient =  #{nama}
+    </select>
+    <select id="selectLignesDuConsultation" resultMap="ligneconsultationMap"
+            resultType="dz.ibnrochd.master14.model.LigneConsultation">
+        SELECT * FROM cabinet.ligne_consultation WHERE id_consultation =#{id}
+    </select>
+
+    
+    <select id="trouverParNom" resultMap="patientMap">
+        select * from cabinet.patient where nom=#{nom}
+    </select>
+    
+    
+    <select id="trouverParId" resultMap="patientMap">
+        select * from cabinet.patient where id=#{id}
+    </select>
+    
+    
+    
+   
+    <insert id="creePatient" parameterType="dz.ibnrochd.master14.model.Patient">
+        INSERT INTO cabinet.patient (id, nom, prenom, sexe, date_naissance, numero_telephone, adresse)
+        VALUES (
+                   #{id},
+                   #{nom},
+                   #{prenom},
+                   #{sexe},
+                   #{dateNaissance},
+                   #{numeroTelephone},
+                   #{adresse}
+               )
+    </insert>
+     <update id="modiferPatient" parameterType="dz.ibnrochd.master14.model.Patient">
+        UPDATE cabinet.patient
+        SET id = #{id}, nom = #{nom}, prenom = #{prenom}, sexe = #{sexe},
+            date_naissance = #{dateNaissance}, numero_telephone = #{numeroTelephone}, adresse = #{adresse}
+        WHERE id = #{id}
+    </update>
+    <delete id="supprimerPatient" parameterType="java.lang.Integer">
+        DELETE FROM cabinet.patient WHERE id = #{id}
+    </delete>
+
+
+</mapper>
